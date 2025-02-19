@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import io
 import warnings
+import json
+
+
 warnings.simplefilter("ignore", UserWarning)
 
 
@@ -28,15 +31,19 @@ if uploaded_file:
 
     df = pd.read_excel(uploaded_file, sheet_name=sheet_name, header=header_row)
 
-    df = df.astype(str)
-
-
     st.subheader("🔍 Visualização dos primeiros dados:")
-    st.dataframe(df.head(3))
+    if st.button("Visualizar Dados"):
+        st.write(df.head())
+
+
+    
+
+    # dropar colunas vazias
 
     colunas_escolhidas = st.multiselect("📊 Selecione as colunas para o resumo descritivo:", df.columns)
 
     if st.button("📥 Carregar Dados"):
+
 
         if all(col in df.columns for col in colunas_escolhidas):
 
@@ -50,7 +57,7 @@ if uploaded_file:
                 st.markdown(descricao)
                 descricao_texto += descricao + "\n"
 
-            st.sidebar.subheader("⬇️ Baixar Relatório Descritivo")
+            st.sidebar.subheader("⬇️ Baixar Resumo")
 
             output = io.BytesIO()
             output.write(descricao_texto.encode("utf-8"))
