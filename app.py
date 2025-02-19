@@ -28,6 +28,9 @@ if uploaded_file:
 
     df = pd.read_excel(uploaded_file, sheet_name=sheet_name, header=header_row)
 
+    df = df.astype(str)
+
+
     st.subheader("🔍 Visualização dos primeiros dados:")
     st.dataframe(df.head(3))
 
